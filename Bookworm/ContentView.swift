@@ -10,13 +10,35 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var books: FetchedResults<Book>
+    @FetchRequest(sortDescriptors: [
+        SortDescriptor(\.title),
+        SortDescriptor(\.author, order: .reverse)
+    ]) var books: FetchedResults<Book>
     
     @State private var showingAddBook = false
     
     var body: some View {
         NavigationView {
-            Text("Count: \(books.count)")
+            List {
+                ForEach(books) { book in
+                    NavigationLink {
+                        DetailView(book: book)
+                    } label: {
+                        HStack {
+                            EmojiRatingView(rating: book.rating)
+                                .font(.largeTitle)
+                            
+                            VStack(alignment: .leading) {
+                                Text(book.title ?? "Unknown title")
+                                    .font(.headline)
+                                
+                                Text(book.author ?? "Unknown author")
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                }
+            }
                 .navigationTitle("Bookworm")
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
@@ -35,7 +57,6 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    @Environment(\.managedObjectContext) var moc
     
     static var previews: some View {
         ContentView()
