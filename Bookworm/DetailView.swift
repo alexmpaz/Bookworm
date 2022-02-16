@@ -35,11 +35,19 @@ struct DetailView: View {
                 .font(.title)
                 .foregroundColor(.secondary)
             
+            // Challenge 3: display "Read date", after inserting field on model
+            if let date = book.date {
+                Text("Read on: \(date.formatted(date: .abbreviated, time: .omitted))")
+//                    .padding(.top)
+            }
+            
             Text(book.review ?? "No review")
                 .padding()
             
             RatingView(rating: .constant(Int(book.rating))) // we don't want the user to be able to adjust the rating here, so we make it constant
                 .font(.largeTitle)
+            
+            
         }
         .navigationTitle(book.title ?? "Unknown title")
         .navigationBarTitleDisplayMode(.inline)

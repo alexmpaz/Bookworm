@@ -31,12 +31,16 @@ struct ContentView: View {
                             VStack(alignment: .leading) {
                                 Text(book.title ?? "Unknown title")
                                     .font(.headline)
+                                // Challenge 2: highlight badly reviewed books
+//                                    .foregroundColor(book.rating == 1 ? Color.red : Color.primary)
+                                    .strikethrough(book.rating == 1 ? true : false)
                                 
                                 Text(book.author ?? "Unknown author")
                                     .foregroundColor(.secondary)
                             }
                         }
-                    }
+                    } // another option for challenge 2
+                    .opacity(book.rating == 1 ? 0.6 : 1)
                 }
                 // enabling deletion, see deleteBooks function
                 .onDelete(perform: deleteBooks)

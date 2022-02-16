@@ -17,6 +17,12 @@ struct AddBookView: View {
     @State private var rating = 3
     @State private var genre = ""
     @State private var review = ""
+    private var isValidBook: Bool {
+        if title.isTrulyEmpty || author.isTrulyEmpty || genre.isTrulyEmpty {
+            return false
+        }
+        return true
+    }
     
     let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
     
@@ -58,11 +64,13 @@ struct AddBookView: View {
                         newBook.rating = Int16(rating)
                         newBook.genre = genre
                         newBook.review = review
+                        newBook.date = Date.now
                         
                         try? moc.save()
                         dismiss()
                     }
-                }
+                } // challenge 1: validating form by conditioning the Save button to required fields
+                .disabled(isValidBook == false)
             }
             .navigationTitle("Add Book")
         }
